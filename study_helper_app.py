@@ -1,9 +1,7 @@
 import streamlit as st
-import openai
+import openai  # ❌ remove this line if still present
 
-from openai import OpenAI
-
-client = OpenAI(api_key="your-api-key")  # Replace with your key or env variable
+client = openai(api_key="your-api-key")  # Replace with your key or env variable
 
 def ask_gpt(prompt):
     response = client.chat.completions.create(
