@@ -2,14 +2,9 @@ import streamlit as st
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
-from PIL import Image
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-# --- Show Logo ---
-logo = Image.open("logo.png")  # Make sure logo.png is in your project folder
-st.image(logo, width=150)  # You can adjust width
 
 # --- App Heading ---
 st.markdown("<h1 style='text-align: center;'>📘 Study Helper</h1>", unsafe_allow_html=True)
@@ -17,7 +12,6 @@ st.markdown("<h3 style='text-align: center;'>👋 Welcome my friend!</h3>", unsa
 
 # --- Powered By ---
 st.markdown("<p style='text-align: center; color: gray;'>🚀 Powered by <b>Krisha Patel</b></p>", unsafe_allow_html=True)
-
 
 # --- Class Selection ---
 class_level = st.selectbox("Select Your Class:", [
