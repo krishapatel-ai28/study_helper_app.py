@@ -1,47 +1,47 @@
 import streamlit as st
 import google.generativeai as genai
-import os
 from dotenv import load_dotenv
+import os
 
-# Load Gemini API key from .env file
+# Load API key from .env
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Initialize Gemini model
-model = genai.GenerativeModel('gemini-pro')
+# Load Gemini model
+model = genai.GenerativeModel("gemini-pro")
 
-# UI Layout
-st.markdown("<h1 style='text-align:center;'>📘 Study Helper AI</h1>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align:center; color: gray;'>Powered by Krisha Patel</h4>", unsafe_allow_html=True)
-st.markdown("<h2 style='text-align:center;'>👋 Welcome my friend!</h2>", unsafe_allow_html=True)
+# Optional: Add app logo
+st.image("logo.png", width=120)
 
-# Subject and Class Selection
-subject = st.selectbox("Select Subject", ["Science", "Maths", "Social Science", "English", "Gujarati", "Hindi"])
-board = st.selectbox("Select Board", ["Gujarat Board", "CBSE", "ICSE", "Other"])
-student_class = st.selectbox("Select Class", ["6", "7", "8", "9", "10", "11", "12"])
-topic = st.text_input("Enter your topic or chapter")
+# Branding
+st.markdown("<h4 style='text-align: center;'>Powered by Krisha Patel</h4>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center;'>📚 Welcome my friend!</h2>", unsafe_allow_html=True)
 
-# Generate Content Button
-if st.button("Generate Study Material"):
-    if topic:
-        with st.spinner("Thinking and generating your study materials..."):
-            prompt = f"""
-You are a helpful study assistant for a student in class {student_class} from {board}. The subject is {subject}.
-Help the student understand the topic "{topic}" in their level of understanding.
+# Subject and class input
+board = st.selectbox("📘 Choose your Board", ["Gujarat Board", "CBSE", "ICSE", "Other"])
+subject = st.selectbox("📗 Choose Subject", ["Science", "Maths", "English", "Social Science", "Computer", "Other"])
+student_class = st.selectbox("🏫 Select Class", ["6", "7", "8", "9", "10", "11", "12"])
+topic = st.text_input("📝 Enter the chapter/topic name")
 
-1. Explain the topic clearly and in detail.
-2. If it involves any process, reaction, or diagram, describe it properly.
-3. Then ask: "Did you understand?" — if not, explain again in simpler terms.
-4. After explanation, give:
-   - Key summary points
-   - 5 important questions
-   - A 20-mark test from this topic
+if topic:
+    prompt = f"""
+    You're a helpful Study Assistant. The user is in class {student_class}, studying under {board}.
+    The subject is {subject}. Based on the topic "{topic}", do the following:
 
-Provide content in simple language.
-"""
+    1. Give a detailed but simple explanation of the topic in student-friendly language.
+    2. Highlight important questions from this chapter (at least 5).
+    3. Create a 20-mark test from the chapter.
+    4. If the topic requires a diagram (e.g. science), describe or suggest it.
+    5. Ask the student if they understood the topic, and if not, offer to explain again in another way.
+    """
+
+    try:
+        with st.spinner("🧠 Thinking..."):
             response = model.generate_content(prompt)
-            st.success("✅ Done! Here's your study material:")
-            st.markdown(response.text)
-    else:
-        st.warning("⚠️ Please enter a topic first.")
+            st.success("✅ Done!")
+            st.write(response.text)
+    except Exception as e:
+        st.error("❌ Failed to get response. Please check your API key or try again.")
+        st.text(str(e))
+
 
