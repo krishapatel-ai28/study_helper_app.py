@@ -12,8 +12,7 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 # Set model name
 model = genai.GenerativeModel("models/gemini-pro")  # ✅ FULL model name
 
-# Logo & branding
-st.image("logo.png", width=120)
+# branding
 st.markdown("<h4 style='text-align: center;'>Powered by Krisha Patel</h4>", unsafe_allow_html=True)
 st.markdown("<h2 style='text-align: center;'>📚 Welcome my friend!</h2>", unsafe_allow_html=True)
 
